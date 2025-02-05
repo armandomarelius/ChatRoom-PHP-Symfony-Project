@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ chat_room.chatName }}{% endblock %}
+
+{% block body %}
+    <h1>{{ chat_room.chatName }}</h1>
+    <a href="{{ path('app_chat_room_index') }}">Back to list</a>
+    <a href="{{ path('app_chat_room_edit', {'id': chat_room.id}) }}">Edit</a>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ chat_room.id }}</td>
+            </tr>
+            <tr>
+                <th>Chat Name</th>
+                <td>{{ chat_room.chatName }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Messages</h2>
+    {% if messages is not empty %}
+        <ul>
+            {% for message in messages %}
+                <li>
+                    <strong>{{ message.user ? message.user.username : 'Anonymous' }}</strong>: 
+                    {{ message.text }} <em>({{ message.date|date('Y-m-d H:i') }})</em>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No messages found for this chatroom.</p>
+    {% endif %}
+
+    <h2>New Message</h2>
+    {{ form_start(form) }}
+        {{ form_widget(form.text) }} {# Esto renderiza el input del mensaje #}
+        <button class="btn">{{ button_label|default('Send') }}</button>
+    {{ form_end(form) }}
+
+{% endblock %}
